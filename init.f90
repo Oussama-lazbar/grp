@@ -82,8 +82,8 @@ contains
         implicit none
 
         real(8):: x, u_init
-        !u_init = 10*cos(2*pi*x)
-        u_init = 1._pr
+        u_init = cos(2*pi*x)
+        !u_init = 1._pr
 
     end function
 

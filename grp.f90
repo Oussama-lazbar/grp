@@ -58,7 +58,7 @@ program grp
     !! -- On affiche la valeur moyenne de la solution par maille : elle correspond à (alpha_{i}^{n})_{0}
     open(unit = 11, file = 'sol.txt')
     do i = 0, Ne - 1
-        write(11,*) i*dx , alpha(i*(ordre + 1))
+        write(11,*) i*dx , (2._pr/dt)*alpha(i*(ordre + 1))
     end do
     close(11)
 

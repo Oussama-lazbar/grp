@@ -1,0 +1,8 @@
+*.o
+*.mod
+n*.txt
+sol.txt
+exe
+run
+grp
+test
