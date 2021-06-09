@@ -9,13 +9,15 @@ contains
             implicit none
 
             integer, intent(in) :: n
-            integer :: factorial, i
-
-            factorial = 1
-            if ( n > 1) then
-                do i = 2, n
-                    factorial = factorial * i
+            integer :: factorial, i, temp
+            temp = 1
+            if (n == 0) then
+                factorial = 1
+            else
+                do i = 1,n
+                    temp = temp*i
                 enddo
+                factorial = temp
             endif
             
         endfunction factorial
@@ -26,7 +28,8 @@ contains
 
             integer, intent(in) :: n,k
             integer :: binomial
-            binomial = factorial(n)/(factorial(k)* factorial(n-k))
+            !binomial = factorial(n)/(factorial(k)* factorial(n-k))
+            binomial = pascal_triangle(n,k)
 
         endfunction binomial
 
@@ -37,13 +40,14 @@ contains
 
             integer, intent(in) :: n
             real(pr), intent(in) :: x
-            real(pr) :: Legendre
+            real(pr) :: Legendre  
             integer :: i
-
+            
             Legendre = 0
             do i = 0, n
                 Legendre = Legendre + (binomial(n,i)**2)*((x-1)**(n-i))*((x+1)**i)
             enddo
+            
             Legendre = Legendre/(2**n)
 
         end function Legendre
@@ -70,7 +74,7 @@ contains
             if (x > ((2*dx)/(a*dt)) - 1 ) then
                 f2 = 0._pr
             else
-                temp = 1 - (a*dt/dx)*(1 + x)
+                temp = 1._pr - (a*dt/dx)*(1 + x)
                 f2 = Legendre(p,x) * Legendre(q,temp)
             endif
 
@@ -124,7 +128,7 @@ contains
                 do j = 0 , ordre
                     call integrale(i,j, f_alpha,numPoints, temp)
                     temp = (j + 0.5_pr) * temp
-                    alpha(i*(ordre + 1) + j) = (dx/2)*temp
+                    alpha(i*(ordre + 1) + j) = (dx/2._pr)*temp
                 enddo
             enddo 
     
@@ -142,12 +146,12 @@ contains
                 call integrale(n,j,f_beta, numPoints, temp)
                 !print*, temp
                 temp = (j + 0.5_pr) * temp
-                beta(j) = (dt/2)*temp
+                beta(j) = (dt/2._pr)*temp
             enddo
 
         end subroutine
     
-        subroutine fill_L1(L1)
+        subroutine init_L1(L1)
             implicit none
 
             real(pr), dimension(0 : ordre , 0 : ordre), intent(inout) :: L1
@@ -157,13 +161,13 @@ contains
             do q = 0, ordre
                 do p = 0, ordre
                     call integrale (p,q,f1,numPoints,temp)
-                    L1(p,q) = (dx/2) * temp
+                    L1(p,q) = (dx/2._pr) * temp
                 end do
             end do
 
-        end subroutine fill_L1
+        end subroutine init_L1
 
-        subroutine fill_L2(L2)
+        subroutine init_L2(L2)
             implicit none
 
             real(pr), dimension(0 : ordre , 0 : ordre), intent(inout) :: L2
@@ -173,13 +177,13 @@ contains
             do q = 0, ordre
                 do p = 0, ordre
                     call integrale (p,q,f2,numPoints,temp)
-                    L2(p,q) = (dt/2) * temp
+                    L2(p,q) = (dt/2._pr) * temp
                 end do
             end do
 
-        end subroutine fill_L2
+        end subroutine init_L2
 
-        subroutine fill_L3(L3)
+        subroutine init_L3(L3)
             implicit none
 
             real(pr), dimension(0 : ordre , 0 : ordre), intent(inout) :: L3
@@ -189,21 +193,21 @@ contains
             do q = 0, ordre
                 do p = 0, ordre
                     call integrale (p,q,f3,numPoints,temp)
-                    L3(p,q) = (dt/2) * temp
+                    L3(p,q) = (dt/2._pr) * temp
                 end do
             end do
 
-        end subroutine fill_L3
+        end subroutine init_L3
 
-        subroutine fill(L1, L2, l3)
+        subroutine init_L(L1, L2, l3)
             implicit NONE
             real(pr), dimension(0 : ordre , 0 : ordre), intent(inout) :: L1, L2, L3
 
-            call fill_L1(L1)
-            call fill_L2(L2)
-            call fill_L3(L3)
+            call init_L1(L1)
+            call init_L2(L2)
+            call init_L3(L3)
 
-        end subroutine fill
+        end subroutine init_L
 
 
 end module
