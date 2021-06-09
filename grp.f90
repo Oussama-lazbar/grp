@@ -20,14 +20,12 @@ program grp
     ! -- remplissage des matrices L_{i}
     call init_L(L1, L2, L3)
 
+    !! -- affichage du triangle de pascal
     ! do i = 0, ordre
     !     print*, pascal_triangle(i,:)
     ! end do
 
-    ! print*, pascal_triangle(4,2)
     
-    
-
     do n = 0, Nt-1
         ! -- initialisation de beta
         call init_beta(n,beta)
@@ -66,14 +64,5 @@ program grp
 
     deallocate(alpha, alpha1, beta, beta1, L1, L2, L3, pascal_triangle)
     
-contains
-
-    function test1(p,q,x)
-        implicit NONE
-
-        integer :: p,q
-        real(pr) :: x, test1
-        test1 = legendre(q,x)
-    end function test1
 
 end program grp
