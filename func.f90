@@ -43,7 +43,7 @@ contains
             real(pr) :: Legendre  
             integer :: i
             
-            Legendre = 0
+            Legendre = 0._pr
             do i = 0, n
                 Legendre = Legendre + (binomial(n,i)**2)*((x-1)**(n-i))*((x+1)**i)
             enddo
@@ -60,7 +60,7 @@ contains
             real(pr) :: x
             real(pr) :: f1 ,  temp
             temp = 1._pr - (dx/(a*dt))*(1+x)
-            f1 = Legendre(p,x) * Legendre(q,temp)
+            f1 = Legendre(p,x) * legendre(q,temp)
             !f1 = Legendre(p,x) * Legendre(q,x)
 
         end function f1
@@ -74,7 +74,7 @@ contains
             if (x > ((2*dx)/(a*dt)) - 1 ) then
                 f2 = 0._pr
             else
-                temp = 1._pr - (a*dt/dx)*(1 + x)
+                temp = 1._pr - ((a*dt/dx)*(1 + x))
                 f2 = Legendre(p,x) * Legendre(q,temp)
             endif
 
@@ -100,10 +100,9 @@ contains
 
             integer :: j,i
             real(pr) :: x, temp, f_alpha
-            temp = (dx/2) * x + (i + 0.5_pr)*dx
+            temp = (dx/2._pr) * x + (i + 0.5_pr)*dx
             f_alpha = u_init(temp) * Legendre(j,x) 
         
-    
         end function f_alpha
 
         function f_beta(n,j,x)
@@ -128,7 +127,7 @@ contains
                 do j = 0 , ordre
                     call integrale(i,j, f_alpha,numPoints, temp)
                     temp = (j + 0.5_pr) * temp
-                    alpha(i*(ordre + 1) + j) = (dx/2._pr)*temp
+                    alpha(i*(ordre + 1) + j) = temp
                 enddo
             enddo 
     
@@ -146,7 +145,7 @@ contains
                 call integrale(n,j,f_beta, numPoints, temp)
                 !print*, temp
                 temp = (j + 0.5_pr) * temp
-                beta(j) = (dt/2._pr)*temp
+                beta(j) = temp
             enddo
 
         end subroutine

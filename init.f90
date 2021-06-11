@@ -4,7 +4,7 @@ module INIT
 
     implicit NONE
     integer, PARAMETER :: pr = 8
-    real(pr), parameter :: pi = acos(1._pr) 
+    real(pr), parameter ::  pi = acos(-1._pr)
     real(8) :: a, dt, dx, Tf
     integer :: ordre, Ne, Nt, numPoints, ii, jj
     integer, dimension(:,:), allocatable ::pascal_triangle
@@ -26,6 +26,7 @@ contains
 
         !! -- Nombre de mailles d'espace 
         Ne = int(1._pr/dx)
+        print*,pi
 
         !! -- Nombre de mailles de temps
         Nt = int(Tf/dt)
@@ -46,7 +47,7 @@ contains
             call system(command)
         endif
 
-        !! initialisation du triangle de 
+        !! initialisation du triangle de pascal
         allocate(pascal_triangle(0:ordre, 0:ordre))
         pascal_triangle = 0
         pascal_triangle(:,0) = 1
@@ -71,6 +72,7 @@ contains
         print*, "ordre = ", ordre
         print*, "Ne = ", Ne
         print*, "Nt = ", Nt
+        print*, "adt/dx = ", a*dt/dx
         
         print*, "*********************************************************"
         
@@ -91,6 +93,7 @@ contains
     function u_g(t)
         implicit NONE
         real(8) :: u_g, t
+        !u_g = t
         u_g = 1._pr
     end function u_g
 

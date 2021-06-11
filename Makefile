@@ -2,7 +2,7 @@ F90 = gfortran
 OFLAGS = -O3 
 DFLAGS = -g -fcheck=all -Wall -fbounds-check
 
-CFLAGS = $(DFLAGS)
+CFLAGS = $(OFLAGS)
 
 grp :  quad.o init.o func.o grp.o
 	$(F90) $(CFLAGS) -o $@ $^
@@ -27,4 +27,4 @@ test.o : test.f90 func.f90
 
 
 clean :
-	rm -f *.o n*.txt sol.txt grp test
+	rm -f *.o sol.txt grp test *.png

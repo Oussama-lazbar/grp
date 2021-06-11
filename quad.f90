@@ -36,7 +36,7 @@ CONTAINS
         !! -- Formule d'integration
         !! -- NOTE : les variables p et q sont là
         !! -- au cas où la fonction à integrer depend 
-        !! -- de paramètres entiers. Ce qui est le cas dans toutes 
+        !! -- de paramètres entiers. Ce qui est le cas de toutes 
         !! -- les integrales dans notre cadre. L'integration se fait par
         !! -- rapport à x.
         DO i = 1, np
