@@ -1,3 +1,3 @@
 set term png
 set output 'toto.png'
-plot 'sol.txt' w lp
+plot 'sol.txt' using 1:2 w lp title "sol num" , 'sol.txt' using 1:3 w l title "sol ex"

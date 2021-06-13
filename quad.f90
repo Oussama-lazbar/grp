@@ -30,6 +30,7 @@ CONTAINS
         WRITE(df, *) np
 
         !! --- Lecture des poids et noeuds à partir d'un fichier
+        
         OPEN(unit = 10, file = 'n'//trim(adjustl(df))//'.txt')
         result = 0
         

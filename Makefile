@@ -6,7 +6,7 @@ CFLAGS = $(OFLAGS)
 
 grp :  quad.o init.o func.o grp.o
 	$(F90) $(CFLAGS) -o $@ $^
-
+	
 test : quad.o init.o func.o test.o
 	$(F90) $(CFLAGS) -o $@ $^
 
@@ -27,4 +27,7 @@ test.o : test.f90 func.f90
 
 
 clean :
-	rm -f *.o sol.txt grp test *.png
+	rm -f *.o sol.txt grp test *.png n*.txt
+
+plot :
+	gnuplot -persist "plot.gn"

@@ -26,7 +26,6 @@ contains
 
         !! -- Nombre de mailles d'espace 
         Ne = int(1._pr/dx)
-        print*,pi
 
         !! -- Nombre de mailles de temps
         Nt = int(Tf/dt)
@@ -38,7 +37,16 @@ contains
         !! -- nombre de points dans la formule de gauss
         !! -- on utilise 64 pour verification des calculs
         !! -- On utlisera le nombre min de points requis ulterieurement
-        numPoints = 64
+        if (2 * (ordre/2) == ordre) then 
+            !numPoints = 64
+            numPoints = ((ordre**2 + 1)/2) + 1
+        else
+            if (ordre == 1) then
+                numPoints = 2
+            else
+                numPoints = ((ordre**2 + 1)/2)
+            end if
+        end if
 
         if (GAUSS_LEGENDRE) then
             write(temp,*) numPoints
@@ -96,6 +104,43 @@ contains
         !u_g = t
         u_g = 1._pr
     end function u_g
+
+    function u_exacte(t,x)
+        implicit NONE
+        real(pr) :: t,x, u_exacte
+        if (x  - a*t < 0) then
+            u_exacte = 1._pr
+        else
+            u_exacte = u_init(x  - a*t)
+        endif
+    endfunction u_exacte
+
+    function u_moy(t,x)
+        implicit none
+        real(pr) :: t,x,u_moy, temp
+        integer :: i
+        i = int(x/dx)
+        if (x  - a*t < 0) then
+            u_moy = 1._pr
+        else
+            temp = 2._pr*pi*(real(i, pr)* dx - a*t)
+            u_moy = (1._pr/(2*pi*dx)) * (sin(temp + 2._pr*pi*dx) - sin(temp) )
+            !print* , sin(2*pi*((i+1)*dx - a*t)) - sin(2*pi*(i*dx - a*t))
+        endif
+    end function u_moy
+
+    function u_moy2(t,i)
+        implicit none
+        real(pr) :: t,u_moy2, temp
+        integer :: i
+        if (real(i,pr)*dx  - a*t < 0) then
+            u_moy2 = 1._pr
+        else
+            temp = 2._pr*pi*(real(i, pr)* dx - a*t)
+            u_moy2 = (1._pr/(2*pi*dx)) * (sin(temp + 2._pr*pi*dx) - sin(temp) )
+        endif
+    end function u_moy2
+
 
 
 

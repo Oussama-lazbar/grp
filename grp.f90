@@ -4,12 +4,13 @@ program grp
     use QUAD
     
     implicit none
+    real(pr) :: timing, start_time, end_time, time = 0, error=0._pr
     real(pr), dimension(:),allocatable :: alpha, alpha1, beta, beta1
     real(pr), dimension(:,:), allocatable :: L1, L2, L3
     integer :: i,n,j
 
     !!! --- initialisation de params physiques et numériques
-    call init_params(.FALSE.)
+    call init_params(.TRUE.)
     call print_params()
 
     !!! --- allocation memoire
@@ -23,8 +24,10 @@ program grp
     ! -- remplissage des matrices L_{i}
     call init_L(L1, L2, L3)
 
+    call cpu_time(start_time)
     
     do n = 0, Nt-1
+        time = time + dt
         ! -- initialisation de beta
         call init_beta(n,beta)
         !print*, beta
@@ -51,14 +54,23 @@ program grp
         alpha = alpha1
     end do
 
+    call cpu_time(end_time)
+    timing = end_time - start_time 
+    print*, "Temps de calcul = ", timing
+
     !! -- On affiche la valeur moyenne de la solution par maille : elle correspond à (alpha_{i}^{n})_{0}
     open(unit = 11, file = 'sol.txt')
     do i = 0, Ne - 1
-        write(11,*) i*dx ,alpha(i*(ordre + 1))
+        write(11,*) i*dx ,alpha(i*(ordre + 1)), u_moy2(time, i)
+        error = error + ((u_moy2(time, i) - alpha(i*(ordre + 1)))**2)
     end do
     close(11)
 
     deallocate(alpha, alpha1, beta, beta1, L1, L2, L3, pascal_triangle)
-    
+    error = sqrt(dx*error)
+    print*, "dx = ", dx, "   ||   erreur = ",error 
+    open(unit=12, file="error_data.dat", position='append')
+    write(12,*) dx, error
+    close(12)
 
 end program grp
