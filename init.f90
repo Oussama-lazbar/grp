@@ -38,21 +38,22 @@ contains
         !! -- on utilise 64 pour verification des calculs
         !! -- On utlisera le nombre min de points requis ulterieurement
         if (2 * (ordre/2) == ordre) then 
-            !numPoints = 64
-            numPoints = ((ordre**2 + 1)/2) + 1
+            numPoints = ((ordre**2 + 1)/2) + 2
         else
             if (ordre == 1) then
-                numPoints = 2
+                numPoints = 4
             else
-                numPoints = ((ordre**2 + 1)/2)
-            end if
+                numPoints = ((ordre**2 + 1)/2) + 1
+            endif
         end if
+        !numPoints = 64
 
         if (GAUSS_LEGENDRE) then
             write(temp,*) numPoints
             print*, 'Génération du fichier n'//trim(adjustl(temp))//'.txt necessaire pour la formule de quadratures.'
             command = 'python3 gauss_leg_coeff.py '//trim(adjustl(temp))
             call system(command)
+            print*, "Fichier généré."
         endif
 
         !! initialisation du triangle de pascal

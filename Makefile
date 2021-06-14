@@ -27,7 +27,8 @@ test.o : test.f90 func.f90
 
 
 clean :
-	rm -f *.o sol.txt grp test *.png n*.txt
+	rm -f *.o sol.txt grp test *.png n*.txt *.dat
 
 plot :
+	mkdir -p plots/ordre2/
 	gnuplot -persist "plot.gn"
